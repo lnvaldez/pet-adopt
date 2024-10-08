@@ -30,7 +30,9 @@ exports.getPets = async function () {
   try {
     const [result] = await db
       .promise()
-      .execute("SELECT name, type, age, description, status FROM pets");
+      .execute(
+        "SELECT name, type, age, description FROM pets WHERE status = 'Available'"
+      );
 
     console.log("Fetched all pets from database.");
     return result;
