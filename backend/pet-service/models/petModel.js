@@ -3,7 +3,7 @@ const config = require("../config/config");
 
 const dbData = config.database;
 
-const db = mysql.createConnection({
+const db = mysql.createPool({
   host: dbData.host,
   user: dbData.user,
   password: dbData.password,
@@ -12,13 +12,11 @@ const db = mysql.createConnection({
 
 exports.addPet = async function (name, type, age) {
   try {
-    await db
-      .promise()
-      .execute("INSERT INTO pets (name, type, age) VALUES (?, ?, ?)", [
-        name,
-        type,
-        age,
-      ]);
+    await db.execute("INSERT INTO pets (name, type, age) VALUES (?, ?, ?)", [
+      name,
+      type,
+      age,
+    ]);
 
     console.log("Succesfully added a new pet.");
   } catch (error) {
@@ -28,11 +26,9 @@ exports.addPet = async function (name, type, age) {
 
 exports.getPets = async function () {
   try {
-    const [result] = await db
-      .promise()
-      .execute(
-        "SELECT name, type, age, description FROM pets WHERE status = 'Available'"
-      );
+    const [result] = await db.execute(
+      "SELECT name, type, age, description FROM pets WHERE status = 'Available'"
+    );
 
     console.log("Fetched all pets from database.");
     return result;
@@ -43,12 +39,10 @@ exports.getPets = async function () {
 
 exports.updatePet = async function (newName, name) {
   try {
-    const [result] = await db
-      .promise()
-      .execute("UPDATE pets SET name = ? WHERE name = ? LIMIT 1", [
-        newName,
-        name,
-      ]);
+    const [result] = await db.execute(
+      "UPDATE pets SET name = ? WHERE name = ? LIMIT 1",
+      [newName, name]
+    );
 
     if (result.affectedRows === 0) {
       throw new Error("Pet not found.");
@@ -62,9 +56,10 @@ exports.updatePet = async function (newName, name) {
 
 exports.updatePetStatus = async function (name) {
   try {
-    const [result] = await db
-      .promise()
-      .execute("UPDATE pets SET status = 'Adopted' WHERE name = ?", [name]);
+    const [result] = await db.execute(
+      "UPDATE pets SET status = 'Adopted' WHERE name = ?",
+      [name]
+    );
 
     if (result.affectedRows === 0) {
       throw new Error("Pet not found.");
@@ -76,9 +71,9 @@ exports.updatePetStatus = async function (name) {
 
 exports.deletePet = async function (name) {
   try {
-    const [result] = await db
-      .promise()
-      .execute("DELETE FROM pets WHERE name = ?", [name]);
+    const [result] = await db.execute("DELETE FROM pets WHERE name = ?", [
+      name,
+    ]);
 
     if (result.affectedRows === 0) {
       throw new Error("Pet not found.");
