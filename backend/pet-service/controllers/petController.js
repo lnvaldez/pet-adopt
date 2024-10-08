@@ -19,3 +19,13 @@ exports.getAvailablePets = async (req, res) => {
     res.status(500).json({ error: "Failed to get all available pets." });
   }
 };
+
+exports.updatePetName = async (req, res) => {
+  const { newName, name } = req.body;
+  try {
+    await Pet.updatePet(newName, name);
+    res.status(201).json({ message: "Updated pet name." });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update pet name." });
+  }
+};
