@@ -25,3 +25,15 @@ exports.addPet = async function (name, type, age) {
     console.error("Error adding new pet: ", error);
   }
 };
+
+exports.getPets = async function () {
+  try {
+    const [result] = await db
+      .promise()
+      .execute("SELECT name, type, age, description, status FROM pets");
+
+    console.log("Fetch all pets from database.");
+  } catch (error) {
+    console.error("Error fetching all pets: ", error);
+  }
+};
