@@ -46,7 +46,7 @@ exports.deletePet = async (req, res) => {
 
   try {
     Pet.deletePet(name);
-    res.status(201).json({ message: "Deleted pet from database." });
+    res.status(204).json({ message: "Deleted pet from database." });
   } catch (error) {
     res.status(500).json({ error: "Failed to delete pet from database." });
   }
