@@ -13,7 +13,7 @@ exports.addNewPet = async (req, res) => {
 
 exports.getAvailablePets = async (req, res) => {
   try {
-    const pets = Pet.getPets();
+    const pets = await Pet.getPets();
     res.json(pets);
   } catch (error) {
     res.status(500).json({ error: "Failed to get all available pets." });
@@ -34,7 +34,7 @@ exports.updatePetStatus = async (req, res) => {
   const { name } = req.body;
 
   try {
-    Pet.updatePetStatus(name);
+    await Pet.updatePetStatus(name);
     res.status(201).json({ message: "Updated pet status." });
   } catch (error) {
     res.status(500).json({ error: "Failed to update pet status." });
@@ -45,7 +45,7 @@ exports.deletePet = async (req, res) => {
   const { name } = req.body;
 
   try {
-    Pet.deletePet(name);
+    await Pet.deletePet(name);
     res.status(204).json({ message: "Deleted pet from database." });
   } catch (error) {
     res.status(500).json({ error: "Failed to delete pet from database." });
