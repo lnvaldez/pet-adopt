@@ -3,7 +3,7 @@ const config = require("../config/config");
 
 const dbData = config.database;
 
-const db = mysql.createPool({
+const pool = mysql.createPool({
   host: dbData.host,
   user: dbData.user,
   password: dbData.password,
@@ -12,7 +12,7 @@ const db = mysql.createPool({
 
 exports.addPet = async function (name, type, age) {
   try {
-    await db.execute("INSERT INTO pets (name, type, age) VALUES (?, ?, ?)", [
+    await pool.execute("INSERT INTO pets (name, type, age) VALUES (?, ?, ?)", [
       name,
       type,
       age,
@@ -21,12 +21,13 @@ exports.addPet = async function (name, type, age) {
     console.log("Succesfully added a new pet.");
   } catch (error) {
     console.error("Error adding new pet: ", error);
+    throw error;
   }
 };
 
 exports.getPets = async function () {
   try {
-    const [result] = await db.execute(
+    const [result] = await pool.execute(
       "SELECT name, type, age, description FROM pets WHERE status = 'Available'"
     );
 
@@ -34,12 +35,13 @@ exports.getPets = async function () {
     return result;
   } catch (error) {
     console.error("Error fetching all pets: ", error);
+    throw error;
   }
 };
 
 exports.updatePet = async function (newName, name) {
   try {
-    const [result] = await db.execute(
+    const [result] = await pool.execute(
       "UPDATE pets SET name = ? WHERE name = ? LIMIT 1",
       [newName, name]
     );
@@ -51,12 +53,13 @@ exports.updatePet = async function (newName, name) {
     console.log(`Updated pet ${name}'s to ${newName}.`);
   } catch (error) {
     console.error("Error updating pet name: ", error);
+    throw error;
   }
 };
 
 exports.updatePetStatus = async function (name) {
   try {
-    const [result] = await db.execute(
+    const [result] = await pool.execute(
       "UPDATE pets SET status = 'Adopted' WHERE name = ?",
       [name]
     );
@@ -71,7 +74,7 @@ exports.updatePetStatus = async function (name) {
 
 exports.deletePet = async function (name) {
   try {
-    const [result] = await db.execute("DELETE FROM pets WHERE name = ?", [
+    const [result] = await pool.execute("DELETE FROM pets WHERE name = ?", [
       name,
     ]);
 
@@ -80,5 +83,6 @@ exports.deletePet = async function (name) {
     }
   } catch (error) {
     console.error("Error deleting pet: ", error);
+    throw error;
   }
 };
