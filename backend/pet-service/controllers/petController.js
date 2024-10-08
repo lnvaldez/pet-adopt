@@ -29,3 +29,12 @@ exports.updatePetName = async (req, res) => {
     res.status(500).json({ error: "Failed to update pet name." });
   }
 };
+
+exports.updatePetStatus = async (req, res) => {
+  try {
+    Pet.updatePetStatus();
+    res.status(201).json({ message: "Updated pet status." });
+  } catch (error) {
+    res.status(500).json({ error: "Failed to update pet status." });
+  }
+};
