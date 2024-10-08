@@ -12,4 +12,8 @@ app.use("/pets", petRoutes);
 
 const PORT = process.env.PORT || 6001;
 
-app.listen(PORT, () => console.log(`Pet service running on port ${PORT}`));
+if (require.main === module) {
+  app.listen(PORT, () => console.log(`Pet service running on port ${PORT}`));
+} else {
+  module.exports = app;
+}
