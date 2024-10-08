@@ -70,3 +70,17 @@ exports.updatePetStatus = async function (name) {
     console.error("Error updating pet status: ", error);
   }
 };
+
+exports.deletePet = async function (name) {
+  try {
+    const [result] = await db
+      .promise()
+      .execute("DELETE FROM pets WHERE name = ?", [name]);
+
+    if (result.affectedRows === 0) {
+      throw new Error("Pet not found.");
+    }
+  } catch (error) {
+    console.error("Error deleting pet: ", error);
+  }
+};
