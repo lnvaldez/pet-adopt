@@ -10,3 +10,12 @@ exports.addNewPet = async (req, res) => {
     res.status(500).json({ error: "Failed to add pet." });
   }
 };
+
+exports.getAvailablePets = async (req, res) => {
+  try {
+    const pets = Pet.getPets();
+    res.json(pets);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to get all available pets." });
+  }
+};
