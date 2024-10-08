@@ -37,3 +37,23 @@ exports.getPets = async function () {
     console.error("Error fetching all pets: ", error);
   }
 };
+
+exports.updatePet = async function (newName, name) {
+  try {
+    const [result] = await db
+      .promise()
+      .execute("UPDATE pets SET name = ? WHERE name = ? LIMIT 1", [
+        newName,
+        newAge,
+        name,
+      ]);
+
+    if (result.affectedRows === 0) {
+      throw new Error("Pet not found.");
+    }
+
+    console.log(`Updated pet ${name}'s to ${newName}.`);
+  } catch (error) {
+    console.error("Error updating pet name: ", error);
+  }
+};
