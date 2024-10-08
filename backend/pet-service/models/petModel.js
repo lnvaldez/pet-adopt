@@ -32,7 +32,8 @@ exports.getPets = async function () {
       .promise()
       .execute("SELECT name, type, age, description, status FROM pets");
 
-    console.log("Fetch all pets from database.");
+    console.log("Fetched all pets from database.");
+    return result;
   } catch (error) {
     console.error("Error fetching all pets: ", error);
   }
