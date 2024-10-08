@@ -12,7 +12,7 @@ const db = mysql.createConnection({
 
 exports.addPet = async function (name, type, age) {
   try {
-    const [result] = await db
+    await db
       .promise()
       .execute("INSERT INTO pets (name, type, age) VALUES (?, ?, ?)", [
         name,
