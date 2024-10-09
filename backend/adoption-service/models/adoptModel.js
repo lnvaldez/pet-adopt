@@ -9,3 +9,17 @@ const pool = mysql.createPool({
   password: dbData.password,
   database: dbData.database,
 });
+
+exports.adoptPet = async function (petId, adopterId) {
+  try {
+    await pool.execute(
+      "INSERT INTO adoptions (pet_id, adopter_id) VALUES (?, ?, ?)",
+      [petId, adopterId]
+    );
+
+    console.log("Successfully adopted a pet.");
+  } catch (error) {
+    console.error("Error adopting a pet: ", error);
+    throw error;
+  }
+};
