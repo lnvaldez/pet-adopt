@@ -1,4 +1,7 @@
+const dotenv = require("dotenv");
 const User = require("../models/userModel");
+
+dotenv.config();
 
 exports.createUser = async (req, res) => {
   const { username, email, password } = req.body;
@@ -23,6 +26,12 @@ exports.verifyUser = async (req, res) => {
         message: result.message,
       });
     }
+
+    const token = jwt.sign(
+      ({ userId: result.user.id, email: result.user.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "24h" })
+    );
   } catch (error) {
     res.status(500).json({
       success: false,
