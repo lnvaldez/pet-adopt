@@ -8,7 +8,7 @@ const {
   deletePet,
 } = require("../controllers/petController");
 
-const { authenticateToken } = require("../middleware/auth");
+const { authenticateToken } = require("../../shared/authMiddleware");
 
 const router = express.Router();
 
