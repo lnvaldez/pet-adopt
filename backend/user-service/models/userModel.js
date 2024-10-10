@@ -33,3 +33,28 @@ exports.createNewUser = async function (username, email, password) {
     throw error;
   }
 };
+
+exports.verifyUser = async function (email, password) {
+  try {
+    const [result] = await pool.execute("SELECT * FROM users WHERE email = ?", [
+      email,
+    ]);
+
+    const user = result[0];
+
+    if (!user) {
+      return { message: "User not found." };
+    }
+
+    const isValid = await bcrypt.compare(password, user.password);
+
+    if (!isValid) {
+      return { message: "Invalid password." };
+    }
+
+    return isValid;
+  } catch (error) {
+    console.error("Error verifying user.");
+    throw error;
+  }
+};
