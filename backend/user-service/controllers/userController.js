@@ -32,6 +32,12 @@ exports.verifyUser = async (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "24h" })
     );
+
+    res.json({
+      sucess: true,
+      token,
+      user: result.user,
+    });
   } catch (error) {
     res.status(500).json({
       success: false,
