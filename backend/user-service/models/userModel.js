@@ -49,7 +49,7 @@ exports.verifyUser = async function (email, password) {
     const isValid = await bcrypt.compare(password, user.password);
 
     if (!isValid) {
-      return { message: "Invalid password." };
+      return { success: false, message: "Invalid password." };
     }
 
     return { success: true };
