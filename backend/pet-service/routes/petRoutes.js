@@ -8,12 +8,14 @@ const {
   deletePet,
 } = require("../controllers/petController");
 
+const { authenticateToken } = require("../middleware/auth");
+
 const router = express.Router();
 
-router.post("/", addNewPet);
-router.get("/available", getAvailablePets);
-router.put("/", updatePetName);
-router.put("/status", updatePetStatus);
-router.delete("/", deletePet);
+router.post("/", authenticateToken, addNewPet);
+router.get("/available", authenticateToken, getAvailablePets);
+router.put("/", authenticateToken, updatePetName);
+router.put("/status", authenticateToken, updatePetStatus);
+router.delete("/", authenticateToken, deletePet);
 
 module.exports = router;
