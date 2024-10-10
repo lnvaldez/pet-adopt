@@ -52,7 +52,7 @@ exports.verifyUser = async function (email, password) {
       return { message: "Invalid password." };
     }
 
-    return isValid;
+    return { success: true };
   } catch (error) {
     console.error("Error verifying user.");
     throw error;
