@@ -1,5 +1,8 @@
 const mysql = require("mysql2/promise");
+const bcrypt = require("bcrypt");
 const config = require("../config/config");
+
+const salt = 10;
 
 const dbData = {
   host: dbData.host,
@@ -15,11 +18,13 @@ const pool = mysql.createPool({
   database: dbData.database,
 });
 
-exports.createNewUser = async function (username, email, password_hash) {
+exports.createNewUser = async function (username, email, password) {
   try {
+    const hashedPassword = await bcrypt.hash(password, salt);
+
     await pool.execute(
       "INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)",
-      [username, email, password_hash]
+      [username, email, hashedPassword]
     );
 
     console.log("Succesfully created user.");
