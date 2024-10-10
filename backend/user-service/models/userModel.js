@@ -55,13 +55,13 @@ exports.verifyUser = async function (email, password) {
   }
 };
 
-exports.deleteUser = async function (username) {
-  try {
-    await pool.execute("DELETE FROM users WHERE username = ?", [username]);
+// exports.deleteUser = async function (username) {
+//   try {
+//     await pool.execute("DELETE FROM users WHERE username = ?", [username]);
 
-    console.log("Successfully deleted user.");
-  } catch (error) {
-    console.error("Error deleting user: ", error);
-    throw error;
-  }
-};
+//     console.log("Successfully deleted user.");
+//   } catch (error) {
+//     console.error("Error deleting user: ", error);
+//     throw error;
+//   }
+// };
