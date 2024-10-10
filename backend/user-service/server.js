@@ -10,7 +10,7 @@ const app = express();
 app.use(express.json());
 app.use("/user", userRoutes);
 
-const PORT = process.env.DB_PORT || 6000;
+const PORT = process.env.PORT || 6000;
 
 if (require.main === module) {
   app.listen(PORT, () => console.log(`User service running at port ${PORT}`));
