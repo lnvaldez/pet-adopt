@@ -46,3 +46,14 @@ exports.verifyUser = async (req, res) => {
     });
   }
 };
+
+exports.deleteUser = async (req, res) => {
+  const username = req.body;
+
+  try {
+    await User.deleteUser(username);
+    res.status(204);
+  } catch (error) {
+    res.status(500).json({ error: "Failed to delete user." });
+  }
+};
