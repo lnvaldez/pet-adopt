@@ -52,7 +52,8 @@ exports.verifyUser = async function (email, password) {
       return { success: false, message: "Invalid password." };
     }
 
-    return { success: true };
+    const { password: _, ...userWithoutPassword } = user;
+    return { success: true, user: userWithoutPassword };
   } catch (error) {
     console.error("Error verifying user.");
     throw error;
