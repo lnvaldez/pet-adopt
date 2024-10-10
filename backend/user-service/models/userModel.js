@@ -4,12 +4,7 @@ const config = require("../config/config");
 
 const salt = 10;
 
-const dbData = {
-  host: dbData.host,
-  user: dbData.user,
-  password: dbData.password,
-  database: dbData.database,
-};
+const dbData = config.database;
 
 const pool = mysql.createPool({
   host: dbData.host,
