@@ -1,4 +1,5 @@
 const dotenv = require("dotenv");
+const jwt = require("jsonwebtoken");
 const User = require("../models/userModel");
 
 dotenv.config();
@@ -28,9 +29,9 @@ exports.verifyUser = async (req, res) => {
     }
 
     const token = jwt.sign(
-      ({ userId: result.user.id, email: result.user.email },
+      { userId: result.user.id, email: result.user.email },
       process.env.JWT_SECRET,
-      { expiresIn: "24h" })
+      { expiresIn: "24h" }
     );
 
     res.json({
