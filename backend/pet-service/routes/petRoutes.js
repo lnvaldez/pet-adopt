@@ -15,7 +15,6 @@ const router = express.Router();
 router.post("/", authenticateToken, addNewPet);
 router.get("/available", getAvailablePets);
 router.put("/", authenticateToken, updatePetName);
-router.put("/status", authenticateToken, updatePetStatus);
 router.delete("/", authenticateToken, deletePet);
 
 module.exports = router;
