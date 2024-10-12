@@ -13,7 +13,7 @@ const pool = mysql.createPool({
 exports.adoptPet = async function (petId, adopterId) {
   try {
     await pool.execute(
-      "INSERT INTO adoptions (pet_id, adopter_id) VALUES (?, ?, ?)",
+      "INSERT INTO adoptions (pet_id, adopter_id) VALUES (?, ?)",
       [petId, adopterId]
     );
 
