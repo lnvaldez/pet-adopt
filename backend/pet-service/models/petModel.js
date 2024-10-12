@@ -57,11 +57,11 @@ exports.updatePet = async function (newName, name) {
   }
 };
 
-exports.updatePetStatus = async function (name) {
+exports.updatePetStatus = async function (id) {
   try {
     const [result] = await pool.execute(
-      "UPDATE pets SET status = 'Adopted' WHERE name = ?",
-      [name]
+      "UPDATE pets SET status = 'Adopted' WHERE id = ?",
+      [id]
     );
 
     if (result.affectedRows === 0) {
