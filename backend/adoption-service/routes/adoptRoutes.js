@@ -1,10 +1,10 @@
 const express = require("express");
 
-const adoptPet = require("../controllers/adoptController");
-const { authenticateToken } = require("../../shared/authMiddleware");
+const adoptController = require("../controllers/adoptController");
+const { authenticateToken } = require("../../shared/middleware/authMiddleware");
 
 const router = express.Router();
 
-router.post("/", authenticateToken, adoptPet);
+router.post("/", authenticateToken, adoptController.adoptPet);
 
 module.exports = router;
