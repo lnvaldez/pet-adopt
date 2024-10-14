@@ -10,7 +10,9 @@ exports.createUser = async (req, res) => {
   try {
     await User.createNewUser(username, email, password);
     res.status(201).json({ message: "User added." });
+    console.log(`User created: username=${username}, email=${email}`);
   } catch (error) {
+    console.error("Error creating user:", error.message);
     res.status(500).json({ error: "Failed to add user." });
   }
 };
@@ -22,8 +24,9 @@ exports.verifyUser = async (req, res) => {
     const result = await User.verifyUser(email, password);
 
     if (!result.success) {
+      console.log("User verification failed:", result.message);
       return res.status(401).json({
-        sucess: false,
+        success: false,
         message: result.message,
       });
     }
@@ -34,27 +37,18 @@ exports.verifyUser = async (req, res) => {
       { expiresIn: "24h" }
     );
 
+    console.log(`User verified: email=${email}`);
     res.json({
-      sucess: true,
+      success: true,
       token,
       user: result.user,
     });
   } catch (error) {
+    console.error("Error verifying user:", error.message);
     res.status(500).json({
       success: false,
-      message: "Login failed",
+      message: "Login failed.",
       error: error.message,
     });
   }
 };
-
-// exports.deleteUser = async (req, res) => {
-//   const username = req.body;
-
-//   try {
-//     await User.deleteUser(username);
-//     res.status(204);
-//   } catch (error) {
-//     res.status(500).json({ error: "Failed to delete user." });
-//   }
-// };
