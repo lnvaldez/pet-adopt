@@ -10,16 +10,15 @@ const pool = mysql.createPool({
   database: dbData.database,
 });
 
-exports.adoptPet = async function (petId, adopterId) {
+exports.adoptPet = async (petId, adopterId) => {
   try {
     await pool.execute(
       "INSERT INTO adoptions (pet_id, adopter_id) VALUES (?, ?)",
       [petId, adopterId]
     );
-
-    console.log("Successfully adopted a pet.");
+    console.log(`Adoption successful: petId=${petId}, adopterId=${adopterId}`);
   } catch (error) {
-    console.error("Error adopting a pet: ", error);
-    throw error;
+    console.error("Error adopting pet:", error.message);
+    throw new Error("Failed to adopt pet.");
   }
 };
