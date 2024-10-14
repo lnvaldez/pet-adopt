@@ -1,6 +1,5 @@
 const express = require("express");
 const dotenv = require("dotenv");
-
 const adoptRoutes = require("./routes/adoptRoutes");
 
 dotenv.config();
