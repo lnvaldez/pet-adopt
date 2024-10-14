@@ -2,8 +2,7 @@ const mysql = require("mysql2/promise");
 const bcrypt = require("bcrypt");
 const config = require("../config/config");
 
-const salt = 10;
-
+const saltRounds = 10;
 const dbData = config.database;
 
 const pool = mysql.createPool({
@@ -13,55 +12,36 @@ const pool = mysql.createPool({
   database: dbData.database,
 });
 
-exports.createNewUser = async function (username, email, password) {
+exports.createNewUser = async (username, email, password) => {
   try {
-    const hashedPassword = await bcrypt.hash(password, salt);
-
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
     await pool.execute(
       "INSERT INTO users (username, email, password_hash) VALUES (?, ?, ?)",
       [username, email, hashedPassword]
     );
-
-    console.log("Succesfully created user.");
+    console.log(`Successfully created user: username=${username}`);
   } catch (error) {
-    console.error("Error creating new user: ", error);
-    throw error;
+    console.error("Error creating user:", error.message);
+    throw new Error("Failed to create user.");
   }
 };
 
-exports.verifyUser = async function (email, password) {
+exports.verifyUser = async (email, password) => {
   try {
     const [result] = await pool.execute("SELECT * FROM users WHERE email = ?", [
       email,
     ]);
-
     const user = result[0];
 
-    if (!user) {
-      return { message: "User not found." };
-    }
+    if (!user) return { success: false, message: "User not found." };
 
     const isValid = await bcrypt.compare(password, user.password_hash);
+    if (!isValid) return { success: false, message: "Invalid password." };
 
-    if (!isValid) {
-      return { success: false, message: "Invalid password." };
-    }
-
-    const { password: _, ...userWithoutPassword } = user;
+    const { password_hash, ...userWithoutPassword } = user;
     return { success: true, user: userWithoutPassword };
   } catch (error) {
-    console.error("Error verifying user.");
-    throw error;
+    console.error("Error verifying user:", error.message);
+    throw new Error("Failed to verify user.");
   }
 };
-
-// exports.deleteUser = async function (username) {
-//   try {
-//     await pool.execute("DELETE FROM users WHERE username = ?", [username]);
-
-//     console.log("Successfully deleted user.");
-//   } catch (error) {
-//     console.error("Error deleting user: ", error);
-//     throw error;
-//   }
-// };
