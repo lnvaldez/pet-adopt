@@ -1,13 +1,10 @@
 const express = require("express");
-
 const {
   addNewPet,
   getAvailablePets,
   updatePetName,
-  updatePetStatus,
   deletePet,
 } = require("../controllers/petController");
-
 const { authenticateToken } = require("../../shared/middleware/authMiddleware");
 
 const router = express.Router();
